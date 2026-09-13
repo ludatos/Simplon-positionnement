@@ -1,0 +1,1 @@
+select sum(prix*qte) as ChiffreAffaire, produit from ventes group by produit;

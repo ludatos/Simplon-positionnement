@@ -1,0 +1,1 @@
+select sum(prix*qte) as ChiffreAffaire, region from ventes group by region;

@@ -1,45 +1,61 @@
 import plotly.express as px
 import pandas as pd
 
-données = pd.read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSC4KusfFzvOsr8WJRgozzsCxrELW4G4PopUkiDbvrrV2lg0S19-zeryp02MC9WYSVBuzGCUtn8ucZW/pub?output=csv')
+données = pd.read_csv("ventes.csv")
 
-#Pour chaque ligne, on calcul une nouvelle colonne ca
+# Pour chaque ligne, on calcule le chiffre d'affaires.
 données["ca"] = données["prix"] * données["qte"]
 
-############# Question 6 ###########
+# Question 6
 
-#Valeurs par produit
-caParProduit = données.groupby("produit")["ca"].sum()
-print('Chiffre d''affaire par produit : ', caParProduit)
+# Valeurs par produit
+ca_par_produit = données.groupby("produit")["ca"].sum()
+print("Chiffre d'affaires par produit :", ca_par_produit)
 
-caMoyenParProduit = données.groupby("produit")["ca"].mean()
-print('Chiffre d''affaire moyen par produit : ', caMoyenParProduit)
+ca_moyen_par_produit = données.groupby("produit")["ca"].mean()
+print("Chiffre d'affaires moyen par produit :", ca_moyen_par_produit)
 
-caMedianParProduit = données.groupby("produit")["ca"].median()
-print('Chiffre d''affaire median par produit : ', caMedianParProduit)
+ca_median_par_produit = données.groupby("produit")["ca"].median()
+print("Chiffre d'affaires médian par produit :", ca_median_par_produit)
 
-venteParProduit = données.groupby("produit")["qte"].sum()
-print('Ventes par produit : ', venteParProduit)
+ventes_par_produit = données.groupby("produit")["qte"].sum()
+print("Quantités vendues par produit :", ventes_par_produit)
 
-ecartTypeParProduit = données.groupby("produit")["qte"].std()
-print('Ecart type des ventes par produit : ', ecartTypeParProduit)
+quantite_moyenne_par_produit = données.groupby("produit")["qte"].mean()
+print("Quantité moyenne vendue par produit :", quantite_moyenne_par_produit)
 
-varianceParProduit = données.groupby("produit")["qte"].var()
-print('Variance des ventes par produit : ', varianceParProduit)
+quantite_mediane_par_produit = données.groupby("produit")["qte"].median()
+print("Quantité médiane vendue par produit :", quantite_mediane_par_produit)
 
-############# Question 7 ###########
-#### Voir fichier question7.py #####
+ecart_type_par_produit = données.groupby("produit")["qte"].std()
+print("Écart-type des quantités par produit :", ecart_type_par_produit)
 
-############# Question 8 ###########
-figure_vente_par_produit = px.pie(données, values='qte', names='produit', title='quantité vendue par produit')
-figure_vente_par_produit.write_html('ventes-par-produit.html')
+variance_par_produit = données.groupby("produit")["qte"].var()
+print("Variance des quantités par produit :", variance_par_produit)
 
-figure_ca_par_produit = px.pie(données, values='ca', names='produit', title='quantité vendue par produit')
-figure_ca_par_produit.write_html('ca-par-produit.html')
+# Question 7 : voir le fichier question7.py.
 
+# Question 8
+figure_ventes_par_produit = px.pie(
+    values=ventes_par_produit.values,
+    names=ventes_par_produit.index,
+    title="Quantités vendues par produit",
+)
+figure_ventes_par_produit.write_html("ventes-par-produit.html")
 
-############
-figure = px.pie(données, values='qte', names='region', title='quantité vendue par région')
-figure.write_html('ventes-par-region.html')
+figure_ca_par_produit = px.pie(
+    values=ca_par_produit.values,
+    names=ca_par_produit.index,
+    title="Chiffre d'affaires par produit",
+)
+figure_ca_par_produit.write_html("ca-par-produit.html")
 
-print('ventes-par-région.html généré avec succès !')
+ventes_par_region = données.groupby("region")["qte"].sum()
+figure_ventes_par_region = px.pie(
+    values=ventes_par_region.values,
+    names=ventes_par_region.index,
+    title="Quantités vendues par région",
+)
+figure_ventes_par_region.write_html("ventes-par-region.html")
+
+print("Les trois graphiques HTML ont été générés avec succès.")
